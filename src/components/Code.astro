@@ -1,0 +1,44 @@
+---
+export interface Props {
+  codeId?: string;
+}
+
+const { codeId } = Astro.props;
+---
+
+<div
+  class="p-4 border border-[#333] shadow shadow-black rounded-xl w-full mx-auto bg-[#1d1d1d]"
+>
+  <code id={codeId} class="text-white">
+    <slot />
+  </code>
+</div>
+
+<style is:global>
+  .code-ok {
+    color: #97c47d;
+    border: 0px solid rgba(0, 0, 0, 0);
+    border-radius: 2px;
+    padding: 1px;
+  }
+  .code-warn {
+    color: #fa9942;
+    background-color: #362a20;
+    border: 0px solid rgba(0, 0, 0, 0);
+    border-radius: 2px;
+    padding: 1px;
+  }
+  .code-error {
+    color: #ff6665;
+    background-color: #332323;
+    border: 0px solid rgba(0, 0, 0, 0);
+    border-radius: 2px;
+    padding: 1px;
+  }
+  .code {
+    color: #aaa;
+    border: 0px solid rgba(0, 0, 0, 0);
+    border-radius: 2px;
+    padding: 1px;
+  }
+</style>

@@ -1,81 +1,110 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import Header from "../components/Header.astro";
+import AnimatedLogo from "../components/AnimatedLogo.astro";
+import Layout from "../layouts/Layout.astro";
+import AnimatedSeparator from "../components/AnimatedSeparator.astro";
+import Code from "../components/Code.astro";
+import Link from "../components/Link.astro";
 ---
 
-<Layout title="Welcome to Astro.">
-	<main>
-		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
-		<p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
-		</p>
-		<ul role="list" class="link-card-grid">
-			<Card
-				href="https://docs.astro.build/"
-				title="Documentation"
-				body="Learn how Astro works and explore the official API docs."
-			/>
-			<Card
-				href="https://astro.build/integrations/"
-				title="Integrations"
-				body="Supercharge your project with new frameworks and libraries."
-			/>
-			<Card
-				href="https://astro.build/themes/"
-				title="Themes"
-				body="Explore a galaxy of community-built starter themes."
-			/>
-			<Card
-				href="https://astro.build/chat/"
-				title="Community"
-				body="Come say hi to our amazing Discord community. ❤️"
-			/>
-		</ul>
-	</main>
+<Layout title="FleapWEB">
+  <Header />
+  <div class="flex items-center flex-col justify-center h-[500px]">
+    <div
+      style="background-color: rgba(255, 0, 0, 0.2); border-color: rgba(255, 0, 0, 0.4);"
+      class="rounded-full border py-1 px-4 text-white font-medium"
+    >
+      ⚠ Página ainda não está pronta ⚠
+    </div>
+    <AnimatedLogo />
+  </div>
+  <div class="w-full border-y border-zinc-600 bg-[#303030] p-8">
+    <div id="about" class="mx-auto max-w-2xl">
+      <div class="w-full flex flex-col items-center justify-center">
+        <div class="w-32">
+          <AnimatedSeparator />
+        </div>
+        <h1 class="p-4 text-white text-xl font-bold tracking-tight">About</h1>
+        <p class="text-base text-justify text-zinc-400 mb-4">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex possimus
+          nam quae pariatur eum ullam laborum nulla perferendis nisi, maiores
+          voluptates sit a? Doloremque distinctio enim, libero ipsam blanditiis
+          omnis. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex
+          possimus nam quae pariatur eum ullam laborum nulla perferendis nisi,
+          maiores voluptates sit a? Doloremque distinctio enim, libero ipsam
+          blanditiis omnis.
+        </p>
+        <Code>
+          <span class="code-warn font-bold">AVISO:</span>
+          <span class="code">{" "}Página em manutenção</span>
+          <br />
+          <span class="code-warn font-bold">AVISO:</span>
+          <span class="code">{" "}Página em manutenção</span>
+          <br />
+          <span class="code-warn font-bold">AVISO:</span>
+          <span class="code">{" "}Página em manutenção</span>
+          <br />
+          <span class="code-warn font-bold">AVISO:</span>
+          <span class="code">{" "}Página em manutenção</span>
+          <br />
+        </Code>
+      </div>
+    </div>
+  </div>
+  <div id="links" class="mx-auto max-w-2xl">
+    <div class="w-full flex flex-col items-center justify-center p-8">
+      <h1 class="p-4 text-white text-xl font-bold tracking-tight mb-2">
+        Links
+      </h1>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 justify-around">
+        <Link title="Polaris" href="https://polaris.fleap.dev">
+          <img width="75px" height="75px" src="/polaris.svg" alt="" />
+        </Link>
+        <Link title="Polaris" href="https://polaris.fleap.dev">
+          <img width="75px" height="75px" src="/polaris.svg" alt="" />
+        </Link>
+        <Link title="Polaris" href="https://polaris.fleap.dev">
+          <img width="75px" height="75px" src="/polaris.svg" alt="" />
+        </Link>
+        <Link title="Polaris" href="https://polaris.fleap.dev">
+          <img width="75px" height="75px" src="/polaris.svg" alt="" />
+        </Link>
+        <Link title="Polaris" href="https://polaris.fleap.dev">
+          <img width="75px" height="75px" src="/polaris.svg" alt="" />
+        </Link>
+        <Link title="Polaris" href="https://polaris.fleap.dev">
+          <img width="75px" height="75px" src="/polaris.svg" alt="" />
+        </Link>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-full border-y border-zinc-600 bg-[#303030] p-8 mt-8">
+    <div class="mx-auto max-w-2xl">
+      <div class="w-full flex flex-col items-center justify-center">
+        <div class="w-32">
+          <AnimatedSeparator />
+        </div>
+        <h1 class="p-4 text-white text-xl font-bold tracking-tight">Another</h1>
+        <p class="text-base text-justify text-zinc-400 mb-4">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex possimus
+          nam quae pariatur eum ullam laborum nulla perferendis nisi, maiores
+          voluptates sit a? Doloremque distinctio enim, libero ipsam blanditiis
+          omnis. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex
+          possimus nam quae pariatur eum ullam laborum nulla perferendis nisi,
+          maiores voluptates sit a? Doloremque distinctio enim, libero ipsam
+          blanditiis omnis.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="p-8">
+    <h1 class="text-center">
+      <a href="mailto:fleap@fleap.dev" class="text-white font-bold"
+        >fleap@fleap.dev</a
+      >
+    </h1>
+  </div>
 </Layout>
 
-<style>
-	main {
-		margin: auto;
-		padding: 1.5rem;
-		max-width: 60ch;
-	}
-	h1 {
-		font-size: 3rem;
-		font-weight: 800;
-		margin: 0;
-	}
-	.text-gradient {
-		background-image: var(--accent-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 400%;
-		background-position: 0%;
-	}
-	.instructions {
-		line-height: 1.6;
-		margin: 1rem 0;
-		border: 1px solid rgba(var(--accent), 25%);
-		background-color: white;
-		padding: 1rem;
-		border-radius: 0.4rem;
-	}
-	.instructions code {
-		font-size: 0.875em;
-		font-weight: bold;
-		background: rgba(var(--accent), 12%);
-		color: rgb(var(--accent));
-		border-radius: 4px;
-		padding: 0.3em 0.45em;
-	}
-	.instructions strong {
-		color: rgb(var(--accent));
-	}
-	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-		gap: 1rem;
-		padding: 0;
-	}
-</style>
+<style></style>

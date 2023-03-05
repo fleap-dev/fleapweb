@@ -1,0 +1,38 @@
+---
+---
+
+<div class="flex items-center justify-center">
+  <h1 class="animated-logo text-5xl md:text-6xl lg:text-7xl">FleapWeb</h1>
+</div>
+
+<style>
+  .animated-logo {
+    font-family: "Pacifico", sans-serif;
+    color: white;
+    line-height: 140px;
+    background: rgb(203, 127, 17);
+    background: linear-gradient(
+      83deg,
+      rgba(203, 127, 17, 1) 0%,
+      rgba(255, 237, 78, 1) 50%,
+      rgba(203, 127, 17, 1) 100%
+    );
+    background-size: 200%;
+    background-repeat: repeat-x;
+    animation: 2s logo linear infinite;
+    animation-direction: reverse;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  @keyframes logo {
+    0% {
+      background-position: 0%;
+    }
+    50% {
+      background-position: 100%;
+    }
+    100% {
+      background-position: 200%;
+    }
+  }
+</style>

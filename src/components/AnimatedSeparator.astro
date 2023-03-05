@@ -1,0 +1,32 @@
+---
+---
+
+<div class="separator w-full h-2 rounded-full"></div>
+
+<style>
+  .separator {
+    width: 100%;
+    background: rgb(203, 127, 17);
+    background: linear-gradient(
+      83deg,
+      rgba(203, 127, 17, 1) 0%,
+      rgba(255, 237, 78, 1) 50%,
+      rgba(203, 127, 17, 1) 100%
+    );
+    background-size: 200%;
+    background-repeat: repeat-x;
+    animation: 2s separator-anim linear infinite;
+    animation-direction: reverse;
+  }
+  @keyframes separator-anim {
+    0% {
+      background-position: 0%;
+    }
+    50% {
+      background-position: 100%;
+    }
+    100% {
+      background-position: 200%;
+    }
+  }
+</style>

@@ -1,0 +1,128 @@
+---
+const headerItems = [
+  {
+    title: "About",
+    href: "#about",
+  },
+  {
+    title: "Links",
+    href: "#links",
+  },
+];
+---
+
+<header>
+  <nav
+    class="p-8 w-full flex items-center justify-between border-b border-zinc-600 lg:justify-center bg-[#303030]"
+    aria-label="Global"
+  >
+    <div class="flex-1 lg:flex-none flex items-center justify-between">
+      <div class="flex lg:hidden">
+        <button
+          id="openMobileHeader"
+          type="button"
+          class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white bg-[#404040]"
+        >
+          <span class="sr-only">Abrir menu</span>
+          <!-- Heroicon name: outline/bars-3 -->
+          <svg
+            class="h-6 w-6"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+          </svg>
+        </button>
+      </div>
+      <div class="hidden lg:flex lg:gap-x-12">
+        {
+          headerItems.map((item) => (
+            <a
+              href={item.href}
+              class="text-sm font-semibold leading-6 text-white"
+            >
+              {item.title}
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Mobile menu, show/hide based on menu open state. -->
+    <div id="mobileHeader" role="dialog" aria-modal="true" class="hidden">
+      <div
+        class="fixed inset-0 z-10 overflow-y-auto bg-[#303030] px-8 py-8 lg:hidden"
+      >
+        <div class="flex items-center justify-between">
+          <button
+            id="closeMobileHeader"
+            type="button"
+            class="-m-2.5 rounded-md p-2.5 text-white"
+          >
+            <span class="sr-only">Fechar menu</span>
+            <!-- Heroicon name: outline/x-mark -->
+            <svg
+              class="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="mt-6 flow-root">
+          <div class="-my-6 divide-y divide-gray-500/10">
+            <div id="mobileLinks" class="space-y-2 py-6">
+              {
+                headerItems.map((item) => (
+                  <a
+                    href={item.href}
+                    class="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-white"
+                  >
+                    {item.title}
+                  </a>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", () => {
+    const openButton = document.getElementById("openMobileHeader");
+    const closeButton = document.getElementById("closeMobileHeader");
+    const mobileHeader = document.getElementById("mobileHeader");
+    openButton.addEventListener(
+      "click",
+      () => (mobileHeader.style.display = "block")
+    );
+    closeButton.addEventListener(
+      "click",
+      () => (mobileHeader.style.display = "none")
+    );
+    document.querySelectorAll("#mobileLinks a").forEach((elem) => {
+      elem.addEventListener(
+        "click",
+        () => (mobileHeader.style.display = "none")
+      );
+    });
+  });
+</script>
