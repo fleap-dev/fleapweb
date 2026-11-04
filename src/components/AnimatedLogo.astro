@@ -1,8 +1,13 @@
 ---
+export interface Props {
+  text?: string;
+}
+
+const { text = "FleapWeb" } = Astro.props;
 ---
 
 <div class="flex items-center justify-center">
-  <h1 class="animated-logo text-5xl md:text-6xl lg:text-7xl">FleapWeb</h1>
+  <h1 class="animated-logo text-5xl md:text-6xl lg:text-7xl">{text}</h1>
 </div>
 
 <style>
