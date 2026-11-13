@@ -6,6 +6,7 @@ import { ArrowLeftIcon, ArrowUpRightIcon, ArrowUpIcon } from "lucide-react"
 import Layout from "@/layouts/main.astro"
 import { Badge } from "@/components/ui/badge"
 import { formatDate } from "@/lib/date"
+import { readingMinutes } from "@/lib/reading-time"
 import { site } from "@/site"
 
 export async function getStaticPaths() {
@@ -18,17 +19,10 @@ const { Content, headings } = await render(post)
 const sections = headings.filter(
   (heading) => heading.depth === 2 && heading.slug !== "footnote-label"
 )
-const readingMinutes = Math.max(
-  1,
-  Math.ceil((post.body ?? "").split(/\s+/).length / 220)
-)
+const minutes = readingMinutes(post.body)
 ---
 
-<Layout
-  title={post.data.title}
-  description={post.data.description}
-  variant="article"
->
+<Layout title={post.data.title} description={post.data.description}>
   <a class="article-skip" href="#post-content">
     Skip to article
   </a>
@@ -49,7 +43,7 @@ const readingMinutes = Math.max(
             {formatDate(post.data.date)}
           </time>
           <span aria-hidden="true">/</span>
-          <span>{readingMinutes} min read</span>
+          <span>{minutes} min read</span>
         </div>
       </div>
     </header>

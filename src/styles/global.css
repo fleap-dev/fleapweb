@@ -227,9 +227,10 @@
     }
 }
 
-/* The journal uses the same type and color system, with room for a margin index.
-   Everything is scoped to the article variant; the homepage and showcase keep
-   their existing layout and Markdown styles. */
+/* The journal: every page in the main layout is set like a notebook page, with
+   a masthead, a margin index, and numbered sections. Posts number their
+   Markdown h2s (.journal-prose); other pages number the h2 of each <section>
+   inside .journal-sections. */
 @layer components {
   .reading-layout {
     --background: oklch(0.987 0.009 95);
@@ -425,7 +426,16 @@
     font-size: 1.25rem;
     line-height: 1.8;
   }
-  .journal-prose h2 {
+  .journal-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    counter-reset: section;
+  }
+
+  .journal-prose h2,
+  .journal-sections > section > h2 {
+    font-family: var(--font-heading);
     display: flex;
     align-items: baseline;
     gap: 0.75rem;
@@ -440,7 +450,20 @@
     text-wrap: balance;
   }
 
-  .journal-prose > h2::before {
+  .journal-sections > section:first-child > h2 {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+  .journal-sections > section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    scroll-margin-top: 2rem;
+  }
+
+  .journal-prose > h2::before,
+  .journal-sections > section > h2::before {
     counter-increment: section;
     content: counter(section, decimal-leading-zero);
     flex-shrink: 0;
