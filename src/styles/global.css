@@ -10,20 +10,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Lets the /design page pin interaction states with data-preview="hover focus active". */
-@custom-variant hover {
-  @media (hover: hover) {
-    &:hover {
-      @slot;
-    }
-  }
-  &[data-preview~="hover"] {
-    @slot;
-  }
-}
-@custom-variant focus-visible (&:focus-visible, &[data-preview~="focus"]);
-@custom-variant active (&:active, &[data-preview~="active"]);
-
 :root {
     --background: oklch(1 0 0);
     --foreground: oklch(0.153 0.006 107.1);
