@@ -1,0 +1,47 @@
+---
+// Base layout for every page: document head, header, and footer.
+// Usage: <Layout title="Page">...</Layout>. Omit `title` on the home page.
+import "@/styles/global.css"
+import { site } from "@/site"
+
+interface Props {
+  title?: string
+  description?: string
+}
+
+const { title, description = site.description } = Astro.props
+const pageTitle = title ? `${title} · ${site.title}` : site.title
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{pageTitle}</title>
+    <!-- Follow the OS color scheme; `.dark` drives the dark tokens in global.css. -->
+    <script is:inline>
+      const media = matchMedia("(prefers-color-scheme: dark)")
+      const sync = () =>
+        document.documentElement.classList.toggle("dark", media.matches)
+      sync()
+      media.addEventListener("change", sync)
+    </script>
+  </head>
+  <body class="flex min-h-svh flex-col">
+    <header class="mx-auto flex w-full max-w-2xl items-center px-6 py-6">
+      <a href="/" class="font-heading text-sm font-semibold tracking-tight">
+        {site.title}
+      </a>
+    </header>
+    <main class="mx-auto flex w-full max-w-2xl flex-1 flex-col px-6">
+      <slot />
+    </main>
+    <footer class="mx-auto w-full max-w-2xl px-6 py-6 text-xs text-muted-foreground">
+      © {new Date().getFullYear()}
+      {site.name}
+    </footer>
+  </body>
+</html>

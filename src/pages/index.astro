@@ -1,0 +1,40 @@
+---
+import Layout from "@/layouts/main.astro"
+import { buttonVariants } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
+import { site } from "@/site"
+---
+
+<Layout>
+  <section class="flex flex-col gap-4 py-16">
+    <h1 class="font-heading text-4xl font-semibold tracking-tight">
+      {site.name}
+    </h1>
+    <p class="max-w-prose text-lg leading-relaxed text-muted-foreground">
+      {site.description}
+    </p>
+    <div class="flex flex-wrap gap-2 pt-2">
+      <a href={`mailto:${site.email}`} class={buttonVariants({ size: "lg" })}>
+        Get in touch
+      </a>
+      {site.links.map((link) => (
+        <a
+          href={link.href}
+          class={buttonVariants({ variant: "outline", size: "lg" })}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <Separator />
+
+  <section class="flex flex-col gap-3 py-12">
+    <h2 class="font-heading text-xl font-semibold tracking-tight">About</h2>
+    <p class="max-w-prose leading-relaxed">
+      I'm a Software Engineering researcher. I write papers, and I love to build
+      software, especially finding ways to make complex things simple.
+    </p>
+  </section>
+</Layout>
