@@ -336,6 +336,8 @@
     font-weight: 500;
     line-height: 1.12;
     letter-spacing: -0.065em;
+    /* Softened ink: halfway between the text color and muted gray. */
+    color: color-mix(in oklch, var(--foreground) 50%, var(--muted-foreground));
     text-align: center;
     text-wrap: balance;
   }
@@ -495,7 +497,11 @@
     line-height: 1.9;
   }
 
+  /* Tables shrink to their content and sit centered; wide ones still scroll. */
   .journal-prose table {
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
     border-collapse: collapse;
     font-size: 0.75rem;
     line-height: 1.7;
