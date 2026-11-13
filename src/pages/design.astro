@@ -1,0 +1,24 @@
+---
+// Internal design-system showcase. Not linked from the site and not indexed.
+import "@/styles/global.css"
+import { Showcase } from "@/showcase/showcase"
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Design system · fleap.dev</title>
+    <script is:inline>
+      document.documentElement.classList.toggle(
+        "dark",
+        matchMedia("(prefers-color-scheme: dark)").matches
+      )
+    </script>
+  </head>
+  <body>
+    <Showcase client:only="react" />
+  </body>
+</html>

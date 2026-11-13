@@ -10,4 +10,11 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   integrations: [react()],
+  markdown: {
+    // Both themes are emitted as CSS variables; global.css picks one per mode.
+    shikiConfig: {
+      themes: { light: "vitesse-light", dark: "vitesse-dark" },
+      defaultColor: false,
+    },
+  },
 })

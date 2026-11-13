@@ -2,7 +2,13 @@
 import Layout from "@/layouts/main.astro"
 import { buttonVariants } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { getCollection } from "astro:content"
+import { formatDate } from "@/lib/date"
 import { site } from "@/site"
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+)
 ---
 
 <Layout>
@@ -36,5 +42,29 @@ import { site } from "@/site"
       I'm a Software Engineering researcher. I write papers, and I love to build
       software, especially finding ways to make complex things simple.
     </p>
+  </section>
+
+  <Separator />
+
+  <section id="writing" class="flex flex-col gap-3 py-12">
+    <h2 class="font-heading text-xl font-semibold tracking-tight">Writing</h2>
+    <ul class="flex flex-col gap-4">
+      {posts.map((post) => (
+        <li class="flex flex-col gap-1">
+          <a
+            href={`/blog/${post.id}`}
+            class="w-fit font-medium underline decoration-primary decoration-2 underline-offset-4 hover:decoration-foreground"
+          >
+            {post.data.title}
+          </a>
+          <time
+            datetime={post.data.date.toISOString()}
+            class="text-sm text-muted-foreground"
+          >
+            {formatDate(post.data.date)}
+          </time>
+        </li>
+      ))}
+    </ul>
   </section>
 </Layout>

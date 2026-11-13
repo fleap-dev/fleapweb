@@ -2,9 +2,27 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/roboto-slab";
-@import "@fontsource-variable/oxanium";
+/* Maple Mono has no variable build; import each weight the headings use. */
+@import "@fontsource/maple-mono/400.css";
+@import "@fontsource/maple-mono/500.css";
+@import "@fontsource/maple-mono/600.css";
+@import "@fontsource/maple-mono/700.css";
 
 @custom-variant dark (&:is(.dark *));
+
+/* Lets the /design page pin interaction states with data-preview="hover focus active". */
+@custom-variant hover {
+  @media (hover: hover) {
+    &:hover {
+      @slot;
+    }
+  }
+  &[data-preview~="hover"] {
+    @slot;
+  }
+}
+@custom-variant focus-visible (&:focus-visible, &[data-preview~="focus"]);
+@custom-variant active (&:active, &[data-preview~="active"]);
 
 :root {
     --background: oklch(1 0 0);
@@ -39,6 +57,8 @@
     --sidebar-accent-foreground: oklch(0.228 0.013 107.4);
     --sidebar-border: oklch(0.93 0.007 106.5);
     --sidebar-ring: oklch(0.737 0.021 106.9);
+    --backdrop: oklch(1 0 0);
+    --backdrop-stripe: oklch(0.98 0.025 95);
 }
 
 .dark {
@@ -73,11 +93,16 @@
     --sidebar-accent-foreground: oklch(0.988 0.003 106.5);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.58 0.031 107.3);
+    --backdrop: oklch(0.24 0.02 107);
+    --backdrop-stripe: oklch(0.21 0.02 107);
 }
 
 @theme inline {
+    --color-backdrop: var(--backdrop);
+    --color-backdrop-stripe: var(--backdrop-stripe);
     --font-serif: 'Roboto Slab Variable', serif;
-    --font-heading: 'Oxanium Variable', sans-serif;
+    --font-heading: 'Maple Mono', monospace;
+    --font-mono: 'Maple Mono', monospace;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -116,6 +141,78 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Backdrop with fine diagonal stripes, drawn around the paper column. */
+@utility bg-stripes {
+  background-color: var(--backdrop);
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--backdrop-stripe) 0 1.5px,
+    transparent 1.5px 3px
+  );
+}
+
+/* Long-form Markdown (blog posts). Wrap rendered content in class="prose". */
+@layer components {
+  .prose {
+    @apply flex flex-col gap-5 leading-relaxed;
+
+    & h2 {
+      @apply mt-6 font-heading text-2xl font-semibold tracking-tight;
+    }
+    & h3 {
+      @apply mt-4 font-heading text-lg font-semibold tracking-tight;
+    }
+    & a {
+      @apply underline decoration-primary decoration-2 underline-offset-4 hover:decoration-foreground;
+    }
+    & strong {
+      @apply font-semibold;
+    }
+    & ul,
+    & ol {
+      @apply flex flex-col gap-2 pl-6 marker:text-muted-foreground;
+    }
+    & ul {
+      @apply list-disc;
+    }
+    & ol {
+      @apply list-decimal;
+    }
+    & blockquote {
+      @apply border-l-4 border-primary pl-5 text-lg text-muted-foreground;
+    }
+    & hr {
+      @apply my-4 border-border;
+    }
+    & :not(pre) > code {
+      @apply rounded-sm bg-muted px-1.5 py-0.5 font-mono text-[0.85em];
+    }
+    & pre {
+      @apply overflow-x-auto rounded-lg border bg-muted! p-4 font-mono text-sm leading-relaxed;
+    }
+    & table {
+      @apply block w-full overflow-x-auto text-sm;
+    }
+    & th {
+      @apply border-b-2 px-3 py-2 text-left font-heading font-semibold whitespace-nowrap;
+    }
+    & td {
+      @apply border-b px-3 py-2 align-top;
+    }
+    & .footnotes {
+      @apply mt-6 border-t pt-6 text-sm text-muted-foreground;
+    }
+  }
+
+  /* Shiki emits both themes as variables (see astro.config.mjs). */
+  .astro-code span {
+    color: var(--shiki-light);
+  }
+  .dark .astro-code span {
+    color: var(--shiki-dark);
+  }
 }
 
 @layer base {

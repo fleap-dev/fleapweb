@@ -1,0 +1,48 @@
+---
+// One page per post in the `blog` collection. The Markdown body is styled by
+// the `.prose` rules in global.css.
+import { getCollection, render } from "astro:content"
+import { ArrowLeftIcon } from "lucide-react"
+import Layout from "@/layouts/main.astro"
+import { Badge } from "@/components/ui/badge"
+import { formatDate } from "@/lib/date"
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog")
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }))
+}
+
+const { post } = Astro.props
+const { Content } = await render(post)
+---
+
+<Layout title={post.data.title} description={post.data.description}>
+  <article class="flex flex-col gap-10 py-12">
+    <header class="flex flex-col gap-4">
+      <a
+        href="/#writing"
+        class="flex w-fit items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
+        <ArrowLeftIcon className="size-3.5" />
+        Writing
+      </a>
+      <h1 class="font-heading text-4xl font-semibold tracking-tight text-balance">
+        {post.data.title}
+      </h1>
+      <p class="text-lg leading-relaxed text-muted-foreground">
+        {post.data.description}
+      </p>
+      <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+        <time datetime={post.data.date.toISOString()}>
+          {formatDate(post.data.date)}
+        </time>
+        {post.data.tags.map((tag) => (
+          <Badge variant="outline">{tag}</Badge>
+        ))}
+      </div>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Layout>
