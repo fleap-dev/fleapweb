@@ -1,6 +1,6 @@
 ---
-// Home page, laid out like the front page of the journal: a deck, a margin
-// index of its sections, and the list of posts.
+// Home page, laid out like the front page of the journal: a deck, an about
+// section, and the list of posts.
 import { getCollection } from "astro:content"
 import { ArrowUpRightIcon } from "lucide-react"
 import Layout from "@/layouts/main.astro"
@@ -13,10 +13,6 @@ const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 )
 
-const sections = [
-  { id: "about", label: "About" },
-  { id: "writing", label: "Writing" },
-]
 const links = [{ label: "Email", href: `mailto:${site.email}` }, ...site.links]
 ---
 
@@ -24,8 +20,8 @@ const links = [{ label: "Email", href: `mailto:${site.email}` }, ...site.links]
   <div class="journal">
     <header class="journal-header">
       <div class="journal-eyebrow">
-        <span>Front page</span>
-        <span>Notes from the workbench</span>
+        <span></span>
+        <span></span>
       </div>
       <h1>{site.name}</h1>
       <p class="journal-deck">{site.description}</p>
@@ -47,66 +43,45 @@ const links = [{ label: "Email", href: `mailto:${site.email}` }, ...site.links]
       </div>
     </header>
 
-    <div class="journal-body">
-      <aside class="journal-margin">
-        <nav aria-label="On this page" class="journal-margin-inner">
-          <h2 class="margin-label">On this page</h2>
-          <ol class="journal-index">
-            {sections.map((section, index) => (
-              <li>
-                <a href={`#${section.id}`}>
-                  <span aria-hidden="true">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  {section.label}
-                </a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-      </aside>
+    <div class="journal-sections pt-8 pb-12 md:pt-12">
+      <section id="about">
+        <h2>About</h2>
+        <p class="max-w-prose text-lg leading-[1.8] text-pretty">
+          I'm a Software Engineering researcher. I write papers, and I love to
+          build software, especially finding ways to make complex things simple.
+        </p>
+      </section>
 
-      <div class="journal-sections pb-12">
-        <section id="about">
-          <h2>About</h2>
-          <p class="max-w-prose text-lg leading-[1.8] text-pretty">
-            I'm a Software Engineering researcher. I write papers, and I love to
-            build software, especially finding ways to make complex things
-            simple.
-          </p>
-        </section>
-
-        <section id="writing">
-          <h2>Writing</h2>
-          <ol class="flex flex-col">
-            {posts.map((post) => (
-              <li class="flex flex-col gap-2 border-b py-6 first:pt-0">
-                <div class="flex gap-4 font-mono text-[0.6875rem] text-muted-foreground">
-                  <time datetime={post.data.date.toISOString()}>
-                    {formatDate(post.data.date)}
-                  </time>
-                  <span aria-hidden="true">/</span>
-                  <span>{readingMinutes(post.body)} min read</span>
-                </div>
-                <a
-                  href={`/blog/${post.id}`}
-                  class="w-fit font-heading text-xl font-medium tracking-tight text-balance underline decoration-transparent decoration-2 underline-offset-4 hover:decoration-primary"
-                >
-                  {post.data.title}
-                </a>
-                <p class="max-w-prose leading-relaxed text-muted-foreground">
-                  {post.data.description}
-                </p>
-                <div class="flex flex-wrap gap-1.5 pt-1">
-                  {post.data.tags.map((tag) => (
-                    <Badge variant="outline">{tag}</Badge>
-                  ))}
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-      </div>
+      <section id="writing">
+        <h2>Writing</h2>
+        <ol class="flex flex-col">
+          {posts.map((post) => (
+            <li class="flex flex-col gap-2 border-b py-6 first:pt-0">
+              <div class="flex gap-4 font-mono text-[0.6875rem] text-muted-foreground">
+                <time datetime={post.data.date.toISOString()}>
+                  {formatDate(post.data.date)}
+                </time>
+                <span aria-hidden="true">/</span>
+                <span>{readingMinutes(post.body)} min read</span>
+              </div>
+              <a
+                href={`/blog/${post.id}`}
+                class="w-fit font-heading text-xl font-medium tracking-tight text-balance underline decoration-transparent decoration-2 underline-offset-4 hover:decoration-primary"
+              >
+                {post.data.title}
+              </a>
+              <p class="max-w-prose leading-relaxed text-muted-foreground">
+                {post.data.description}
+              </p>
+              <div class="flex flex-wrap gap-1.5 pt-1">
+                {post.data.tags.map((tag) => (
+                  <Badge variant="outline">{tag}</Badge>
+                ))}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
     </div>
   </div>
 </Layout>

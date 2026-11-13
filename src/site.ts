@@ -14,6 +14,5 @@ export const site = {
   email: "fleap@fleap.dev",
   links: [
     { label: "GitHub", href: "https://github.com/fleap-dev" },
-    { label: "Polaris", href: "https://polaris.fleap.dev" },
   ] satisfies SiteLink[],
 }

@@ -23,26 +23,13 @@ const pageTitle = title ? `${title} · ${site.title}` : site.title
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{pageTitle}</title>
-    <!-- A saved preference takes priority over the OS, before the first paint. -->
+    <!-- Light by default; a saved choice from the toggle applies before the first paint. -->
     <script is:inline>
-      const media = matchMedia("(prefers-color-scheme: dark)")
-      let preference = null
       try {
-        preference = localStorage.getItem("theme")
+        if (localStorage.getItem("theme") === "dark") {
+          document.documentElement.classList.add("dark")
+        }
       } catch {}
-      const sync = () => {
-        document.documentElement.classList.toggle(
-          "dark",
-          preference === "dark" || (preference !== "light" && media.matches)
-        )
-      }
-      sync()
-      media.addEventListener("change", () => {
-        try {
-          preference = localStorage.getItem("theme")
-        } catch {}
-        sync()
-      })
     </script>
   </head>
   <!-- Striped backdrop; the page itself is a centered journal "paper". -->
@@ -52,9 +39,7 @@ const pageTitle = title ? `${title} · ${site.title}` : site.title
         <a href="/" class="font-heading text-sm font-semibold tracking-tight">
           {site.title}
         </a>
-        <span class="masthead-caption">
-          A notebook on software & other things
-        </span>
+        <span class="masthead-caption"></span>
         <Button
           id="theme-toggle"
           variant="ghost"
@@ -73,7 +58,7 @@ const pageTitle = title ? `${title} · ${site.title}` : site.title
         <span>
           © {new Date().getFullYear()} {site.name}
         </span>
-        <span>Built with care. Kept simple.</span>
+        <span>FleapWEB</span>
       </footer>
     </div>
   </body>
@@ -95,10 +80,6 @@ const pageTitle = title ? `${title} · ${site.title}` : site.title
     } catch {}
     syncToggle()
   })
-  matchMedia("(prefers-color-scheme: dark)").addEventListener(
-    "change",
-    syncToggle
-  )
 
   // Print in the light theme, then restore the reader's theme.
   let printedFromDark = false
