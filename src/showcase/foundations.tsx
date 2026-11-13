@@ -74,7 +74,7 @@ export function Foundations() {
     >
       <div className="flex flex-col gap-3">
         <h3 className="font-heading text-sm font-semibold">Color roles</h3>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
           {pairs.map(([name, bg, fg]) => (
             <ColorPair key={name} name={name} background={bg} foreground={fg} />
           ))}
@@ -133,7 +133,7 @@ export function Foundations() {
         </p>
       </div>
 
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid gap-8 lg:grid-cols-2">
         <div className="flex flex-col gap-3">
           <h3 className="font-heading text-sm font-semibold">Radius</h3>
           <div className="flex flex-wrap gap-4">
@@ -166,7 +166,7 @@ export function Foundations() {
         </div>
       </div>
 
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="grid gap-8 lg:grid-cols-2">
         <div className="flex flex-col gap-3">
           <h3 className="font-heading text-sm font-semibold">Elevation</h3>
           <div className="grid grid-cols-2 gap-4">

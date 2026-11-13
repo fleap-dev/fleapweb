@@ -4,7 +4,8 @@ import { cn } from "@/lib/utils"
 
 // Layout primitives for the /design showcase. Not used by the public site.
 
-// A top-level showcase section with an anchor id.
+// A top-level showcase section with an anchor id. Its h2 sits directly in the
+// <section> so .journal-sections can number it.
 export function Section({
   id,
   title,
@@ -17,17 +18,13 @@ export function Section({
   children: React.ReactNode
 }) {
   return (
-    <section id={id} className="flex scroll-mt-20 flex-col gap-8 py-12">
-      <header className="flex flex-col gap-1">
-        <h2 className="font-heading text-2xl font-semibold tracking-tight">
-          {title}
-        </h2>
-        {description && (
-          <p className="max-w-prose text-sm text-muted-foreground">
-            {description}
-          </p>
-        )}
-      </header>
+    <section id={id} className="flex flex-col gap-8">
+      <h2>{title}</h2>
+      {description && (
+        <p className="-mt-6 max-w-prose text-sm text-muted-foreground">
+          {description}
+        </p>
+      )}
       {children}
     </section>
   )
@@ -51,7 +48,7 @@ export function Block({
     <div
       className={cn(
         "flex min-w-0 flex-col gap-3",
-        wide && "md:col-span-2",
+        wide && "lg:col-span-2",
         className
       )}
     >
@@ -70,7 +67,7 @@ export function Block({
 
 // Two-column grid of blocks.
 export function Grid({ children }: { children: React.ReactNode }) {
-  return <div className="grid gap-8 md:grid-cols-2">{children}</div>
+  return <div className="grid gap-8 lg:grid-cols-2">{children}</div>
 }
 
 // Small mono caption for labeling rows inside a block.
