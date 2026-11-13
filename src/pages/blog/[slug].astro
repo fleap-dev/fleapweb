@@ -2,10 +2,11 @@
 // One page per post in the `blog` collection. The Markdown body is styled by
 // the `.prose` rules in global.css.
 import { getCollection, render } from "astro:content"
-import { ArrowLeftIcon } from "lucide-react"
+import { ArrowLeftIcon, ArrowUpRightIcon, ArrowUpIcon } from "lucide-react"
 import Layout from "@/layouts/main.astro"
 import { Badge } from "@/components/ui/badge"
 import { formatDate } from "@/lib/date"
+import { site } from "@/site"
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog")
@@ -13,36 +14,93 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props
-const { Content } = await render(post)
+const { Content, headings } = await render(post)
+const sections = headings.filter(
+  (heading) => heading.depth === 2 && heading.slug !== "footnote-label"
+)
+const readingMinutes = Math.max(
+  1,
+  Math.ceil((post.body ?? "").split(/\s+/).length / 220)
+)
 ---
 
-<Layout title={post.data.title} description={post.data.description}>
-  <article class="flex flex-col gap-10 py-12">
-    <header class="flex flex-col gap-4">
-      <a
-        href="/#writing"
-        class="flex w-fit items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
-      >
-        <ArrowLeftIcon className="size-3.5" />
-        Writing
-      </a>
-      <h1 class="font-heading text-4xl font-semibold tracking-tight text-balance">
-        {post.data.title}
-      </h1>
-      <p class="text-lg leading-relaxed text-muted-foreground">
-        {post.data.description}
-      </p>
-      <div class="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
-        <time datetime={post.data.date.toISOString()}>
-          {formatDate(post.data.date)}
-        </time>
-        {post.data.tags.map((tag) => (
-          <Badge variant="outline">{tag}</Badge>
-        ))}
+<Layout
+  title={post.data.title}
+  description={post.data.description}
+  variant="article"
+>
+  <a class="article-skip" href="#post-content">
+    Skip to article
+  </a>
+  <article class="journal" id="top" aria-labelledby="post-title">
+    <header class="journal-header">
+      <div class="journal-eyebrow">
+        <a href="/#writing">
+          <ArrowLeftIcon aria-hidden="true" /> All writing
+        </a>
+        <span>Notes from the workbench</span>
+      </div>
+      <h1 id="post-title">{post.data.title}</h1>
+      <p class="journal-deck">{post.data.description}</p>
+      <div class="journal-meta">
+        <span class="journal-byline">By {site.name}</span>
+        <div class="journal-publication">
+          <time datetime={post.data.date.toISOString()}>
+            {formatDate(post.data.date)}
+          </time>
+          <span aria-hidden="true">/</span>
+          <span>{readingMinutes} min read</span>
+        </div>
       </div>
     </header>
-    <div class="prose">
-      <Content />
+    <div class="journal-body">
+      <aside class="journal-margin">
+        <div class="journal-margin-inner">
+          {sections.length > 0 && (
+            <nav aria-label="In this note">
+              <h2 class="margin-label">In this note</h2>
+              <ol class="journal-index">
+                {sections.map((section, index) => (
+                  <li>
+                    <a href={`#${section.slug}`}>
+                      <span aria-hidden="true">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      {section.text}
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </nav>
+          )}
+          <div class="journal-topics">
+            <p class="margin-label">Filed under</p>
+            <div class="flex flex-wrap gap-1.5">
+              {post.data.tags.map((tag) => (
+                <Badge variant="outline">{tag}</Badge>
+              ))}
+            </div>
+          </div>
+        </div>
+      </aside>
+      <div class="prose journal-prose" id="post-content" tabindex="-1">
+        <Content />
+      </div>
     </div>
+    <footer class="journal-end">
+      <span class="journal-end-mark" aria-hidden="true">
+        ↳
+      </span>
+      <div>
+        <p class="margin-label">A note by {site.name}</p>
+        <p>Thinking out loud. Building along the way.</p>
+        <a href="/#writing">
+          More from the notebook <ArrowUpRightIcon aria-hidden="true" />
+        </a>
+      </div>
+      <a href="#top" class="journal-back-top" aria-label="Back to top">
+        <ArrowUpIcon aria-hidden="true" />
+      </a>
+    </footer>
   </article>
 </Layout>

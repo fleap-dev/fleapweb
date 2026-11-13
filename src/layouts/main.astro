@@ -3,13 +3,20 @@
 // Usage: <Layout title="Page">...</Layout>. Omit `title` on the home page.
 import "@/styles/global.css"
 import { site } from "@/site"
+import { Button } from "@/components/ui/button"
+import { MoonIcon, SunIcon } from "lucide-react"
 
 interface Props {
   title?: string
   description?: string
+  variant?: "default" | "article"
 }
 
-const { title, description = site.description } = Astro.props
+const {
+  title,
+  description = site.description,
+  variant = "default",
+} = Astro.props
 const pageTitle = title ? `${title} · ${site.title}` : site.title
 ---
 
@@ -21,32 +28,105 @@ const pageTitle = title ? `${title} · ${site.title}` : site.title
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{pageTitle}</title>
-    <!-- Follow the OS color scheme; `.dark` drives the dark tokens in global.css. -->
+    <!-- A saved preference takes priority over the OS, before the first paint. -->
     <script is:inline>
       const media = matchMedia("(prefers-color-scheme: dark)")
-      const sync = () =>
-        document.documentElement.classList.toggle("dark", media.matches)
+      let preference = null
+      try {
+        preference = localStorage.getItem("theme")
+      } catch {}
+      const sync = () => {
+        document.documentElement.classList.toggle(
+          "dark",
+          preference === "dark" || (preference !== "light" && media.matches)
+        )
+      }
       sync()
-      media.addEventListener("change", sync)
+      media.addEventListener("change", () => {
+        try {
+          preference = localStorage.getItem("theme")
+        } catch {}
+        sync()
+      })
     </script>
   </head>
   <!-- Striped backdrop; the page itself is a centered "paper" column. -->
-  <body class="flex min-h-svh flex-col bg-stripes md:py-12">
+  <body
+    class:list={[
+      "flex min-h-svh flex-col bg-stripes",
+      variant === "article" ? "reading-layout" : "md:py-12",
+    ]}
+  >
     <div
-      class="mx-auto flex w-full max-w-3xl flex-1 flex-col bg-background px-6 shadow-2xl md:px-12"
+      class:list={[
+        "mx-auto flex w-full flex-1 flex-col bg-background",
+        variant === "article"
+          ? "reading-paper"
+          : "max-w-3xl px-6 shadow-2xl md:px-12",
+      ]}
     >
-      <header class="flex items-center py-6">
+      <header
+        class:list={[
+          "flex items-center",
+          variant === "article" ? "reading-masthead" : "py-6",
+        ]}
+      >
         <a href="/" class="font-heading text-sm font-semibold tracking-tight">
           {site.title}
         </a>
+        {variant === "article" && (
+          <>
+            <span class="masthead-caption">
+              A notebook on software & other things
+            </span>
+            <Button
+              id="theme-toggle"
+              variant="ghost"
+              size="icon-lg"
+              aria-label="Toggle dark theme"
+              aria-pressed="false"
+            >
+              <SunIcon className="theme-sun" />
+              <MoonIcon className="theme-moon" />
+            </Button>
+          </>
+        )}
       </header>
       <main class="flex flex-1 flex-col">
         <slot />
       </main>
-      <footer class="py-6 text-xs text-muted-foreground">
+      <footer
+        class:list={[
+          "py-6 text-xs text-muted-foreground",
+          { "reading-footer": variant === "article" },
+        ]}
+      >
         © {new Date().getFullYear()}
         {site.name}
+        {variant === "article" && <span>Built with care. Kept simple.</span>}
       </footer>
     </div>
   </body>
 </html>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>("#theme-toggle")
+  const syncToggle = () => {
+    toggle?.setAttribute(
+      "aria-pressed",
+      String(document.documentElement.classList.contains("dark"))
+    )
+  }
+  syncToggle()
+  toggle?.addEventListener("click", () => {
+    const dark = document.documentElement.classList.toggle("dark")
+    try {
+      localStorage.setItem("theme", dark ? "dark" : "light")
+    } catch {}
+    syncToggle()
+  })
+  matchMedia("(prefers-color-scheme: dark)").addEventListener(
+    "change",
+    syncToggle
+  )
+</script>

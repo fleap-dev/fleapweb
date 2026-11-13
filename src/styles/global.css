@@ -226,3 +226,417 @@
     @apply font-serif;
     }
 }
+
+/* The journal uses the same type and color system, with room for a margin index.
+   Everything is scoped to the article variant; the homepage and showcase keep
+   their existing layout and Markdown styles. */
+@layer components {
+  .reading-layout {
+    --background: oklch(0.987 0.009 95);
+    --muted-foreground: oklch(0.48 0.022 107);
+    padding-block: 2rem;
+  }
+
+  .dark .reading-layout {
+    --background: oklch(0.18 0.009 107);
+    --muted-foreground: oklch(0.737 0.021 106.9);
+  }
+
+  .reading-paper {
+    max-width: 68rem;
+    padding-inline: 4rem;
+    border: 1px solid var(--border);
+    box-shadow: none;
+  }
+
+  .reading-masthead {
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--foreground);
+  }
+
+  .reading-masthead > a {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 1rem;
+  }
+
+  .reading-masthead > a::before {
+    content: "";
+    width: 0.7rem;
+    height: 0.7rem;
+    background: var(--primary);
+  }
+
+  .masthead-caption,
+  .margin-label,
+  .journal-eyebrow,
+  .journal-meta,
+  .journal-index,
+  .reading-footer {
+    font-family: var(--font-mono);
+  }
+
+  .masthead-caption {
+    margin-left: auto;
+    font-size: 0.625rem;
+    color: var(--muted-foreground);
+  }
+
+  .theme-sun {
+    display: none;
+  }
+  .dark .theme-sun {
+    display: block;
+  }
+  .dark .theme-moon {
+    display: none;
+  }
+
+  .journal {
+    padding-top: 2.25rem;
+  }
+  .journal a {
+    text-underline-offset: 0.25em;
+  }
+  .journal a:focus-visible,
+  .reading-masthead a:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 5px;
+  }
+
+  .journal-eyebrow {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+  }
+
+  .journal-eyebrow a,
+  .journal-end a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .journal-eyebrow svg,
+  .journal-end svg {
+    width: 1rem;
+    height: 1rem;
+  }
+  .journal-eyebrow a:hover,
+  .journal-index a:hover {
+    color: var(--foreground);
+  }
+
+  .journal-header h1 {
+    max-width: 18ch;
+    margin-block: 2.75rem 1.75rem;
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 500;
+    line-height: 1.12;
+    letter-spacing: -0.065em;
+    text-wrap: balance;
+  }
+
+  .journal-deck {
+    max-width: 44rem;
+    font-size: 1.125rem;
+    line-height: 1.8;
+    color: var(--muted-foreground);
+    text-wrap: pretty;
+  }
+
+  .journal-meta {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-block: 1.25rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--foreground);
+    font-size: 0.6875rem;
+  }
+
+  .journal-publication {
+    display: flex;
+    gap: 1rem;
+    color: var(--muted-foreground);
+  }
+  .journal-body {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 3.5rem;
+    padding-top: 3rem;
+  }
+  .journal-margin-inner {
+    position: sticky;
+    top: 2rem;
+  }
+  .margin-label {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .journal-margin .margin-label {
+    margin-bottom: 1.25rem;
+  }
+  .journal-index {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 0.6875rem;
+    line-height: 1.65;
+  }
+  .journal-index a {
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+    gap: 0.5rem;
+    color: var(--muted-foreground);
+  }
+  .journal-index a span {
+    color: var(--muted-foreground);
+    opacity: 0.7;
+  }
+  .journal-index a:hover span {
+    color: var(--foreground);
+    opacity: 1;
+  }
+  .journal-topics {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .journal-prose {
+    min-width: 0;
+    gap: 1.4rem;
+    font-size: 1.0625rem;
+    line-height: 1.95;
+    counter-reset: section;
+  }
+
+  .journal-prose > p:first-child {
+    font-size: 1.25rem;
+    line-height: 1.8;
+  }
+  .journal-prose h2 {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-top: 2.25rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 1.375rem;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.04em;
+    scroll-margin-top: 2rem;
+    text-wrap: balance;
+  }
+
+  .journal-prose > h2::before {
+    counter-increment: section;
+    content: counter(section, decimal-leading-zero);
+    flex-shrink: 0;
+    padding: 0.125rem 0.3rem;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    transform: translateY(-0.2rem);
+  }
+
+  .journal-prose li {
+    padding-left: 0.25rem;
+  }
+  .journal-prose blockquote {
+    margin-block: 1rem;
+    padding: 1.75rem 0 1.75rem 1.5rem;
+    border-left-width: 3px;
+    color: var(--foreground);
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.7;
+    letter-spacing: -0.025em;
+  }
+
+  .journal-prose pre {
+    border-radius: 0;
+    border-left: 3px solid var(--primary);
+    padding: 1.5rem;
+    font-size: 0.75rem;
+    line-height: 1.9;
+  }
+
+  .journal-prose table {
+    border-collapse: collapse;
+    font-size: 0.75rem;
+    line-height: 1.7;
+  }
+  .journal-prose th {
+    padding: 0.75rem;
+    background: var(--muted);
+    font-size: 0.625rem;
+    font-weight: 500;
+  }
+  .journal-prose td {
+    padding: 1rem 0.75rem;
+  }
+  .journal-prose td:first-child {
+    font-family: var(--font-mono);
+    font-weight: 500;
+  }
+  .journal-prose tbody tr:last-child {
+    background: color-mix(in oklch, var(--primary) 9%, var(--background));
+  }
+  .journal-prose > hr {
+    display: none;
+  }
+  .journal-prose .footnotes {
+    font-size: 0.75rem;
+    line-height: 1.8;
+  }
+  .journal-prose .footnotes li {
+    scroll-margin-top: 2rem;
+  }
+
+  .journal-end {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-block: 4rem 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--foreground);
+  }
+
+  .journal-end-mark {
+    font-family: var(--font-mono);
+    font-size: 2.5rem;
+    line-height: 1;
+    color: var(--primary);
+  }
+  .journal-end p + p {
+    margin-top: 0.75rem;
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+  }
+  .journal-end a {
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+  }
+  .journal-end a:hover {
+    text-decoration: underline;
+  }
+  .journal-end .journal-back-top {
+    margin-left: auto;
+    margin-top: 0;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+  }
+  .reading-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.625rem;
+  }
+
+  .article-skip {
+    position: absolute;
+    top: 0.5rem;
+    left: -100vw;
+    padding: 0.75rem;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+  .article-skip:focus {
+    left: 1rem;
+  }
+
+  @media (max-width: 767px) {
+    .reading-layout {
+      padding-block: 0;
+    }
+    .reading-paper {
+      padding-inline: 1.5rem;
+      border: 0;
+    }
+    .reading-masthead {
+      padding-block: 1.25rem;
+    }
+    .masthead-caption {
+      display: none;
+    }
+    .journal {
+      padding-top: 1.5rem;
+    }
+    .journal-eyebrow {
+      font-size: 0.625rem;
+    }
+    .journal-eyebrow > span {
+      display: none;
+    }
+    .journal-header h1 {
+      margin-top: 2rem;
+      font-size: clamp(2.25rem, 8vw, 3.75rem);
+    }
+    .journal-deck {
+      font-size: 1rem;
+    }
+    .journal-meta {
+      margin-top: 2rem;
+      gap: 0.75rem;
+    }
+    .journal-body {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2rem;
+      padding-top: 2rem;
+    }
+    .journal-margin-inner {
+      position: static;
+    }
+    .journal-index {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem 1rem;
+    }
+    .journal-topics {
+      display: none;
+    }
+    .journal-prose {
+      font-size: 1rem;
+      line-height: 1.9;
+    }
+    .journal-prose > p:first-child {
+      font-size: 1.125rem;
+    }
+    .journal-prose h2 {
+      margin-top: 1.75rem;
+      font-size: 1.25rem;
+    }
+    .journal-prose blockquote {
+      font-size: 1.25rem;
+      padding-left: 1.25rem;
+    }
+    .journal-prose pre {
+      padding: 1rem;
+    }
+    .journal-end {
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+    .reading-footer {
+      flex-wrap: wrap;
+    }
+  }
+}
