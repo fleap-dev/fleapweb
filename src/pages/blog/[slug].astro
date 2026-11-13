@@ -1,10 +1,12 @@
 ---
 // One page per post in the `blog` collection. The Markdown body is styled by
-// the `.prose` rules in global.css.
+// the `.prose` rules in global.css; the cover image sits above the title.
 import { getCollection, render } from "astro:content"
+import { Image } from "astro:assets"
 import { ArrowLeftIcon, ArrowUpRightIcon, ArrowUpIcon } from "lucide-react"
 import Layout from "@/layouts/main.astro"
 import { Badge } from "@/components/ui/badge"
+import { ShareActions } from "@/components/share-actions"
 import { formatDate } from "@/lib/date"
 import { readingMinutes } from "@/lib/reading-time"
 import { site } from "@/site"
@@ -34,6 +36,15 @@ const minutes = readingMinutes(post.body)
         </a>
         <span>Notes from the workbench</span>
       </div>
+      <Image
+        class="journal-cover"
+        src={post.data.cover.src}
+        alt={post.data.cover.alt}
+        widths={[640, 1088, 1600, 2176]}
+        sizes="(max-width: 68rem) 100vw, 60rem"
+        loading="eager"
+        fetchpriority="high"
+      />
       <h1 id="post-title">{post.data.title}</h1>
       <p class="journal-deck">{post.data.description}</p>
       <div class="journal-meta">
@@ -74,6 +85,14 @@ const minutes = readingMinutes(post.body)
                 <Badge variant="outline">{tag}</Badge>
               ))}
             </div>
+          </div>
+          <div class="journal-share">
+            <p class="margin-label">Share</p>
+            <ShareActions
+              client:load
+              title={post.data.title}
+              markdownUrl={`/blog/${post.id}.md`}
+            />
           </div>
         </div>
       </aside>

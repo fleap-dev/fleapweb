@@ -3,6 +3,9 @@ title: Memory is a bet on the future
 description: Notes on what coding agents should remember between sessions, and why the hard part is deciding what matters before you know what comes next.
 date: 2026-11-13
 tags: [agents, memory, notes]
+cover:
+  src: ./memory-is-a-bet.png
+  alt: Watercolor of a tree whose branches spread from a single bright trunk, most of them blue, one of them glowing orange.
 ---
 
 Every new session, my coding agent asks which package manager this project uses. It is a small thing. But it is also a perfect example of a bigger problem: the agent learned something yesterday, and today it is gone.

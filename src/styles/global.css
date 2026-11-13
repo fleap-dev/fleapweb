@@ -247,6 +247,7 @@
     max-width: 68rem;
     padding-inline: 4rem;
     border: 1px solid var(--border);
+    border-radius: calc(var(--radius-xl) / 2);
     box-shadow: none;
   }
 
@@ -333,19 +334,28 @@
     color: var(--foreground);
   }
 
+  .journal-cover {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+    margin-top: 2.25rem;
+    border-radius: var(--radius-lg);
+  }
+
   .journal-header h1 {
-    max-width: 18ch;
     margin-block: 2.75rem 1.75rem;
     font-family: var(--font-heading);
     font-size: clamp(2.5rem, 6vw, 4.5rem);
     font-weight: 500;
     line-height: 1.12;
     letter-spacing: -0.065em;
+    text-align: center;
     text-wrap: balance;
   }
 
   .journal-deck {
-    max-width: 44rem;
+    text-align: center;
     font-size: 1.125rem;
     line-height: 1.8;
     color: var(--muted-foreground);
@@ -408,7 +418,8 @@
     color: var(--foreground);
     opacity: 1;
   }
-  .journal-topics {
+  .journal-topics,
+  .journal-share {
     margin-top: 2rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--border);
@@ -593,6 +604,7 @@
     .reading-paper {
       padding-inline: 1.5rem;
       border: 0;
+      border-radius: 0;
     }
     .reading-masthead {
       padding-block: 1.25rem;
@@ -608,6 +620,10 @@
     }
     .journal-eyebrow > span {
       display: none;
+    }
+    .journal-cover {
+      margin-top: 1.5rem;
+      border-radius: var(--radius-md);
     }
     .journal-header h1 {
       margin-top: 2rem;
@@ -660,6 +676,66 @@
     }
     .reading-footer {
       flex-wrap: wrap;
+    }
+  }
+
+  /* Print (and Save as PDF): just the note, without the site around it. */
+  @media print {
+    .reading-layout {
+      padding: 0;
+    }
+    .reading-paper {
+      max-width: none;
+      padding: 0;
+      border: 0;
+    }
+    .reading-masthead,
+    .reading-footer,
+    .journal-eyebrow,
+    .journal-margin,
+    .journal-end,
+    .article-skip {
+      display: none;
+    }
+    .journal-body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Wide screens: the margin (index and tags) leaves the paper for a fixed card
+     centered in the gutter left of the paper, and the content takes its
+     column. The card starts centered in the window and rises with the page
+     until it is 2rem from the top; the layout script sets --margin-top.
+     100rem leaves room for the card beside the 68rem paper. */
+  @media (min-width: 100rem) {
+    .journal-body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .journal-margin {
+      --gutter: calc((100vw - 68rem) / 2);
+      --card-width: min(21rem, calc(var(--gutter) - 4rem));
+      position: fixed;
+      top: var(--margin-top, 2rem);
+      left: calc((var(--gutter) - var(--card-width)) / 2);
+      width: var(--card-width);
+      max-height: calc(100svh - 4rem);
+      overflow-y: auto;
+      padding: 1.75rem;
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius-xl) / 2);
+      background: var(--background);
+    }
+    .journal-margin-inner {
+      position: static;
+    }
+    .journal-margin .journal-index {
+      font-size: 0.8125rem;
+    }
+    .journal-margin .journal-index a {
+      grid-template-columns: 1.5rem 1fr;
+    }
+    .journal-margin .margin-label {
+      font-size: 0.6875rem;
     }
   }
 }

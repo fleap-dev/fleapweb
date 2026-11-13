@@ -1,6 +1,7 @@
 ---
 // Base layout for every page: document head, header, and footer.
-// Usage: <Layout title="Page">...</Layout>. Omit `title` on the home page.
+// Usage: <Layout title="Page">...</Layout>. Omit `title` on the home page;
+// pass `noindex` for internal pages that search engines should skip.
 import "@/styles/global.css"
 import { site } from "@/site"
 import { Button } from "@/components/ui/button"
@@ -9,9 +10,10 @@ import { MoonIcon, SunIcon } from "lucide-react"
 interface Props {
   title?: string
   description?: string
+  noindex?: boolean
 }
 
-const { title, description = site.description } = Astro.props
+const { title, description = site.description, noindex } = Astro.props
 const pageTitle = title ? `${title} · ${site.title}` : site.title
 ---
 
@@ -21,6 +23,7 @@ const pageTitle = title ? `${title} · ${site.title}` : site.title
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{pageTitle}</title>
     <!-- A saved preference takes priority over the OS, before the first paint. -->
@@ -46,11 +49,9 @@ const pageTitle = title ? `${title} · ${site.title}` : site.title
     </script>
   </head>
   <!-- Striped backdrop; the page itself is a centered journal "paper". -->
-  <body class="reading-layout flex min-h-svh flex-col bg-stripes">
-    <div
-      class="reading-paper mx-auto flex w-full flex-1 flex-col bg-background"
-    >
-      <header class="reading-masthead flex items-center">
+  <body class="reading-layout flex min-h-svh flex-col bg-stripes print:bg-none">
+    <div class="reading-paper mx-auto flex w-full flex-1 flex-col bg-background">
+      <header class="reading-masthead flex items-center print:hidden">
         <a href="/" class="font-heading text-sm font-semibold tracking-tight">
           {site.title}
         </a>
@@ -72,7 +73,9 @@ const pageTitle = title ? `${title} · ${site.title}` : site.title
         <slot />
       </main>
       <footer class="reading-footer py-6 text-xs text-muted-foreground">
-        <span>© {new Date().getFullYear()} {site.name}</span>
+        <span>
+          © {new Date().getFullYear()} {site.name}
+        </span>
         <span>Built with care. Kept simple.</span>
       </footer>
     </div>
@@ -99,4 +102,31 @@ const pageTitle = title ? `${title} · ${site.title}` : site.title
     "change",
     syncToggle
   )
+
+  // Print in the light theme, then restore the reader's theme.
+  let printedFromDark = false
+  addEventListener("beforeprint", () => {
+    printedFromDark = document.documentElement.classList.contains("dark")
+    document.documentElement.classList.remove("dark")
+  })
+  addEventListener("afterprint", () => {
+    document.documentElement.classList.toggle("dark", printedFromDark)
+  })
+
+  // On wide screens the margin card is fixed beside the paper (global.css).
+  // It starts centered in the window, then rises with the page and stops 2rem
+  // (32px) from the top. Narrower layouts ignore --margin-top.
+  const card = document.querySelector<HTMLElement>(".journal-margin")
+  if (card) {
+    const place = () => {
+      const start = (innerHeight - card.offsetHeight) / 2
+      card.style.setProperty(
+        "--margin-top",
+        `${Math.max(32, start - scrollY)}px`
+      )
+    }
+    place()
+    addEventListener("scroll", place, { passive: true })
+    addEventListener("resize", place)
+  }
 </script>
