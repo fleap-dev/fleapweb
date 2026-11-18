@@ -14,11 +14,26 @@ export type Paper = {
   href?: string
 }
 
+const role = "Software Engineering researcher"
+const motto = "I build complex things as simply as possible."
+
 export const site = {
   name: "Felipe Paixão",
   title: "fleap.dev",
-  description:
-    "Software Engineering researcher. I build complex things as simply as possible.",
+  role,
+  // The home page headline. Its words "complex" and "simply" are drawn
+  // differently there (see src/pages/index.astro).
+  motto,
+  description: `${role}. ${motto}`,
+  // Home page copy: the intro under the headline, the figure captions, and
+  // the line above the email address.
+  about:
+    "I write papers, and I love to build software, especially finding ways to make complex things simple.",
+  captions: {
+    portrait: "The author.",
+    untangle: "Complexity, reduced.",
+  },
+  contact: "The simplest way to reach me is email.",
   email: "fleap@fleap.dev",
   links: [
     { label: "GitHub", href: "https://github.com/fleap-dev" },
