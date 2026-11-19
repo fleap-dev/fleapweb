@@ -10,7 +10,7 @@ RUN npm ci --no-audit --no-fund
 COPY . .
 RUN npm run build
 
-FROM docker.io/library/nginx:1.30.6-alpine
+FROM docker.io/library/nginx:1.30.7-alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Its own folder, so the default pages in /usr/share/nginx/html (e.g. 50x.html) are not served.
 COPY --from=build /app/dist /srv/www
