@@ -1,0 +1,195 @@
+% Curriculum vitae of Felipe de Sant'Anna Paixão.
+% Build: pnpm cv (runs pdflatex twice, so publication references resolve,
+% then copies the PDF to public/cv.pdf)
+\documentclass[11pt,letterpaper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\renewcommand{\rmdefault}{ptm}  % Times for text; Latin Modern for monospace
+\usepackage[letterpaper,top=0.8in,bottom=0.8in,left=2.15in,right=0.85in]{geometry}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{linkblue}{RGB}{25,40,110}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{3em}  % avoid overfull lines from long DOIs
+\widowpenalty=10000\clubpenalty=10000  % never leave one line of a paragraph alone on a page
+
+% Width of the left label column and the gap between it and the body.
+\newlength{\labelcol}\setlength{\labelcol}{1.2in}
+\newlength{\labelgap}\setlength{\labelgap}{0.12in}
+
+% \cvsection{Label}: starts a section, printing its small-caps label in the
+% left margin. The label sits on an empty, zero-height line, and the kern pulls
+% the body's first line up onto the same baseline, so a multi-line label never
+% pushes the body down and lists start level with their label.
+\newcommand{\cvsection}[1]{%
+  \par\vspace{13pt}\noindent
+  \llap{\smash{\parbox[t]{\labelcol}{\raggedright\scshape #1}}\hspace{\labelgap}}%
+  \par\kern-\baselineskip\ignorespaces}
+
+% \entry{Text}{Date}: one line item with the date flush right. If the text
+% wraps, the date sits at the end of the last line (TeXbook, ch. 14). No page
+% break is allowed right after it, so it stays with its details.
+\newcommand{\entry}[2]{%
+  {\hyphenpenalty=10000 #1\unskip\nobreak\hfil\penalty50\hskip1em\null\nobreak\hfil#2%
+   \parfillskip=0pt\finalhyphendemerits=0\par}\nobreak}
+
+% \detail{Text}: a line under an entry (advisor, PI, funding).
+\newcommand{\detail}[1]{{#1\par}}
+
+% bullets: tight bullet list under an entry.
+\newenvironment{bullets}{\begin{list}{\textbullet}{%
+  \setlength{\leftmargin}{1.1em}\setlength{\labelwidth}{0.7em}%
+  \setlength{\labelsep}{0.4em}\setlength{\topsep}{0pt}%
+  \setlength{\itemsep}{0pt}\setlength{\parsep}{0pt}\setlength{\partopsep}{0pt}}}%
+  {\end{list}}
+
+% pubs: numbered publication list ([1], [2], ...).
+\newcounter{pub}
+\newenvironment{pubs}{\begin{list}{[\arabic{pub}]}{\usecounter{pub}%
+  \setlength{\leftmargin}{2.2em}\setlength{\labelwidth}{1.6em}%
+  \setlength{\labelsep}{0.6em}\setlength{\topsep}{0pt}%
+  \setlength{\itemsep}{3pt}\setlength{\parsep}{0pt}\setlength{\partopsep}{0pt}}}%
+  {\end{list}}
+
+% How my name appears in author lists (bold, as published).
+\newcommand{\me}{\textbf{Felipe de Sant'Anna Paixão}}
+\newcommand{\doi}[1]{\href{https://doi.org/#1}{\textcolor{linkblue}{doi:#1}}}
+
+\begin{document}
+
+% Header spans the full page width, including the label column.
+\hspace*{-\dimexpr\labelcol+\labelgap\relax}%
+\begin{minipage}{\dimexpr\textwidth+\labelcol+\labelgap\relax}
+  \centering
+  {\LARGE\bfseries Felipe de Sant'Anna Paixão}\\[5pt]
+  \textcolor{linkblue}{%
+    M.Sc.\ Student in Computer Science, Federal University of Bahia (UFBA), Brazil\\[1pt]
+    \href{mailto:fleap@fleap.dev}{\texttt{fleap@fleap.dev}}
+    \,$\cdot$\,
+    \href{https://fleap.dev}{\texttt{fleap.dev}}
+    \,$\cdot$\,
+    \href{https://github.com/fleap-dev}{\texttt{github.com/fleap-dev}}
+    \,$\cdot$\,
+    ORCID: \href{https://orcid.org/0009-0009-7370-5478}{\texttt{0009-0009-7370-5478}}}
+  \\[8pt]\rule{\linewidth}{0.8pt}
+\end{minipage}
+\vspace{4pt}
+
+\cvsection{Summary}
+M.Sc.\ student in Computer Science at the Federal University of Bahia and
+software engineering researcher. Experienced in programming with Rust, C, C++,
+Java, TypeScript, Go, Python, and more, with hands-on knowledge of databases,
+Linux systems development and maintenance, CI/CD, Kubernetes, service meshes,
+computer networks, and internet protocols. Strongly interested in software
+security, LLM-based agents, highly configurable systems, software architecture,
+and tools that support software development.
+
+\cvsection{Education}
+\entry{\textbf{M.Sc.\ Computer Science}, Federal University of Bahia}{2025--present}
+\detail{Advisor: Eduardo Santana de Almeida. Funded by a CNPq M.Sc.\ fellowship.}
+\vspace{3pt}
+\entry{\textbf{B.Sc.\ Science and Technology}, Federal University of Bahia}{2021--2025}
+
+\cvsection{Services}
+\textbf{Reviewer}, Empirical Software Engineering (EMSE)\par
+\textbf{Reviewer}, ACM Transactions on Software Engineering and Methodology (TOSEM)\par
+\textbf{Reviewer}, IEEE Transactions on Reliability\par
+
+\cvsection{Peer-reviewed\\Publications}
+\begin{pubs}
+  \item\label{pub:fse} \me, Joanna C.\,S.\ Santos, Paulo Anselmo da Mota Silveira Neto, Daniel Sadoc
+        Menasché, Gustavo Bittencourt Figueiredo, Eduardo Santana de Almeida.
+        Automated Detection of Configuration-Specific Security Vulnerabilities via
+        Patch Analysis. \textit{Proceedings of the ACM on Software Engineering, Vol.~3,
+        Issue FSE (FSE)}, 2026. \doi{10.1145/3808126}
+  \item\label{pub:msr} Claudio Marcos Durand Segal, Paulo Marcos Durand Segal, Carlos Eduardo de
+        Schuller Banjar, \me, Hudson Borges, Paulo Silveira Neto, Eduardo Santana de
+        Almeida, Joanna C.\,S.\ Santos, Anton Kocheturov, Gaurav Kumar Srivastava,
+        Daniel Sadoc Menasché. Characterizing and Modeling the GitHub Security
+        Advisories Review Pipeline. \textit{Proceedings of the 23rd International
+        Conference on Mining Software Repositories (MSR)}, 2026.
+        \doi{10.1145/3793302.3793360}
+  \item\label{pub:icsa} \textbf{Felipe Paixão}, Jander Pereira Santos, Enio Garcia de Santana, Erlon
+        Pereira Almeida, Isys Sant'Anna, Joel Pires, Eduardo Ferreira da Silva, Mayki
+        dos Santos Oliveira, Jorge Luis da Silva Batista Filho, Adriano H.\ de O.\
+        Maia, Dhyego Tavares, Elis Vasconcelos, Fêlipe Rosário de Araújo, Frederico
+        Araújo Durão, Cássio Vinicius Serafim Prazeres, Gustavo Bittencourt
+        Figueiredo, Ivan do Carmo Machado, Maycon Leone Maciel Peixoto, Ricardo Araújo
+        Rios, Tatiane Nogueira Rios, Bruno Pereira dos Santos, Rafael Augusto de Melo,
+        Eduardo Santana de Almeida. ARGUS: A Context-Aware Software Architecture for
+        Smart Environments. \textit{2026 IEEE 23rd International Conference on
+        Software Architecture (ICSA)}, 2026. \doi{10.1109/ICSA66085.2026.00036}
+  \item\label{pub:sbes} \me, Joanna C.\,S.\ Santos, Paulo Anselmo da Mota Silveira Neto, Daniel Sadoc
+        Menasche, Gustavo Bittencourt Figueiredo, Eduardo Santana de Almeida.
+        Patchlens: A Static Analysis Tool for Variant-Aware Change Impact Analysis in
+        Configurable Systems. \textit{Proceedings of the 40th Brazilian Symposium on
+        Software Engineering (SBES)}, 2026. \doi{10.5753/sbes.2026.27975}
+  \item\label{pub:sbqs} Dhyego Tavares Cruz, Erlon Pereira Almeida, Jander Pereira Santos, \me, Enio
+        Garcia de Santana, Rodrigo Rocha Gomes e Souza, Hérsio Massanori Iwamoto,
+        Frederico Araújo Durão, Cássio Vinicius Serafim Prazeres, Ivan do Carmo
+        Machado, Gustavo Bittencourt Figueiredo, Maycon Leone Maciel Peixoto, Eduardo
+        Santana de Almeida. Software Development Practices and Tools for
+        University--Industry R\&D Projects. \textit{Proceedings of the XXIII Brazilian
+        Symposium on Software Quality (SBQS)}, 2024. \doi{10.1145/3701625.3701627}
+\end{pubs}
+
+\cvsection{Research\\Projects}
+\entry{\textbf{Innovation in the Service of Justice}, TJES}{2026--present}
+\detail{Senior Developer research fellow, Innovation Lab. Court of Justice of the State of Espírito Santo (TJES).
+PI: Maycon Leone Peixoto. Supported by FAPES and SECTI/ES.}
+\begin{bullets}
+  \item Research, development, and innovation program that delivers
+        artificial intelligence solutions for the Court, from diagnosis and testing with Court units to production deployment.
+\end{bullets}
+\vspace{5pt}
+\entry{\textbf{Integration of Continuous-Variable Quantum Key Distribution with Classical Networks}, SENAI CIMATEC}{2026--present}
+\detail{Visiting Specialist research fellow. PI: João Marcelo Silva Souza. Funded by EMBRAPII.}
+\begin{bullets}
+  \item Integrates continuous-variable quantum key distribution with classical
+        network infrastructure at QuIIN (Quantum Industrial Innovation),
+        the EMBRAPII CIMATEC Competence Center in Quantum Technologies.
+\end{bullets}
+\vspace{5pt}
+\entry{\textbf{Security Vulnerabilities in Highly Configurable Systems}, UFBA}{2024--present}
+\detail{PI: Eduardo Santana de Almeida. Funded by CNPq/MCTI/FNDCT (Conhecimento Brasil Program).}
+\begin{bullets}
+  \item Studies how vulnerabilities affect specific configurations of open-source
+        highly configurable systems.
+  \item Rather than only filtering which patches apply to a configuration, looks for
+        alternative configurations that avoid a vulnerability without applying its
+        patch, using machine-learning-based configuration sampling and Markov chain
+        Monte Carlo (MCMC).
+  \item Measures how prevalent these vulnerabilities are in deployed systems using
+        Shodan data. Resulted in publications [\ref{pub:fse}], [\ref{pub:msr}], and [\ref{pub:sbes}].
+\end{bullets}
+\vspace{5pt}
+\entry{\textbf{ARGUS: AI for Corporate Security}, UFBA}{2023--2025}
+\detail{University--industry R\&D project. PI: Gustavo Bittencourt Figueiredo.}
+\begin{bullets}
+  \item Context-aware platform for smart environments that processes data from
+        security cameras and sensors, orchestrates cloud resources, and recommends
+        responses to security events.
+  \item Resulted in publications [\ref{pub:icsa}] and [\ref{pub:sbqs}].
+\end{bullets}
+\vspace{5pt}
+\entry{\textbf{Intelligent Platform for Reducing Falls in Hospital Beds}, UFBA}{2023--2025}
+\detail{PI: Eduardo Santana de Almeida. Funded by CNPq. Partner: Instituto Cardio Pulmonar da Bahia.}
+\begin{bullets}
+  \item Predicts falls of hospitalized patients. Covers requirements elicitation
+        with the partner hospital, requirements specification, design, and
+        application development.
+\end{bullets}
+
+\cvsection{Competences}
+\textbf{Programming Languages}\enspace Rust, C, C++, Java, TypeScript, Go, Python, Lua, Bash\par\vspace{2pt}
+\textbf{Web Frameworks}\enspace React, Next.js, Astro, Vite, Vue, Tailwind CSS, Axum\par\vspace{2pt}
+\textbf{Systems and Infrastructure}\enspace Linux, Kubernetes, service mesh,
+gRPC, Terraform\par\vspace{2pt}
+\textbf{Networking}\enspace BGP, OSPF, VPN, SDN, TLS, DNS, QUIC, WebRTC, iSCSI
+
+\end{document}

@@ -37,6 +37,8 @@ export const site = {
   email: "fleap@fleap.dev",
   links: [
     { label: "GitHub", href: "https://github.com/fleap-dev" },
+    // Built from cv/cv.tex with `pnpm cv`.
+    { label: "CV", href: "/cv.pdf" },
   ] satisfies SiteLink[],
   // Shown in this order under "Featured papers".
   papers: [

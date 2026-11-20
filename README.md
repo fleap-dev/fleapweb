@@ -9,11 +9,13 @@ pnpm install
 pnpm dev       # http://localhost:4321
 pnpm build     # static output in dist/
 pnpm typecheck
+pnpm cv        # rebuild public/cv.pdf from cv/cv.tex (needs pdflatex)
 ```
 
 ## Structure
 
 - `src/site.ts` — site-wide content (name, description, links).
+- `cv/cv.tex` — the CV in LaTeX. `pnpm cv` builds it into `public/cv.pdf`, which is committed.
 - `src/layouts/main.astro` — base layout (head, header, footer).
 - `src/pages/` — one file per route.
 - `src/styles/global.css` — design tokens (colors, fonts, radius) and Tailwind setup.

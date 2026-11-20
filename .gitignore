@@ -20,3 +20,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# LaTeX output for the CV (pnpm cv copies the PDF to public/)
+cv/build/
